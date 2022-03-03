@@ -21,7 +21,10 @@ app.use("/api", allRoutes);
 
 const collectionRouter = require('./routes/collection.routes'); 
 app.use('/api', collectionRouter);  
-     
+
+const cardRouter = require('./routes/cards.routes'); 
+app.use('/api', cardRouter);  
+
 
 // To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

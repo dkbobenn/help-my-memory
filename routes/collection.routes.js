@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Collection = require("../models/Collection.model");
-//const PasswordCard = require("../models/PasswordCard.model");
-//const StandardCard = require("../models/StandardCard.model");
-const fileUploader = require("../config/cloudinary.config");
+const Card = require("../models/Card.model");
+const fileUploader = require("../config/cloudinaryCollec.config");
 
 //  POST /api/collections  -  Creates a new collection
 router.post(
@@ -18,13 +17,13 @@ router.post(
     //console.log("file is: ", req.file)
 
     let path = "";
-    
+
     if (req.file) {
       path = req.file.path;
     }
 
     //create collection:
-    Collection.create({ title, imageUrl: path, cardType, cards: [] })
+    Collection.create({ title, imageUrl: path, cards: [] })
       .then((response) => res.json(response))
       .catch((err) => res.json(err));
   }
@@ -33,7 +32,7 @@ router.post(
 // Retrieves all of the collections:
 router.get("/collections", (req, res, next) => {
   Collection.find()
-    //.populate("cards")
+    .populate("cards")
     .then((allCollections) => res.json(allCollections))
     .catch((err) => res.json(err));
 });
@@ -49,13 +48,13 @@ router.get("/collections/:collectionId", (req, res, next) => {
   }
 
   Collection.findById(collectionId)
-    //.populate('cards')
+    .populate('cards')
     .then((collection) => res.status(200).json(collection))
     .catch((error) => res.json(error));
 });
 
 //Updates a specific collection by id:
-router.put("/collections/:collectionId", (req, res, next) => {
+router.put("/collections/:collectionId/edit", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -69,7 +68,7 @@ router.put("/collections/:collectionId", (req, res, next) => {
 });
 
 // Deletes a specific Collection by id
-router.delete("/collections/:collectionId", (req, res, next) => {
+router.delete("/collections/:collectionId/delete", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
