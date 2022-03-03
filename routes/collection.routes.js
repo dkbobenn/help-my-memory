@@ -11,20 +11,20 @@ router.post(
   "/collections",
   fileUploader.single("imageUrl"),
   (req, res, next) => {
-    const { title, imageUrl } = req.body;
+    const { title, imageUrl, cardType } = req.body;
 
     //console.log(imageUrl)
     //console.log(title)
     //console.log("file is: ", req.file)
 
     let path = "";
-
+    
     if (req.file) {
       path = req.file.path;
     }
 
     //create collection:
-    Collection.create({ title, imageUrl: path, cards: [] })
+    Collection.create({ title, imageUrl: path, cardType, cards: [] })
       .then((response) => res.json(response))
       .catch((err) => res.json(err));
   }

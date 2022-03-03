@@ -5,7 +5,8 @@ const collectionSchema = new Schema(
   {
     title: String,
     imageUrl: String,
-    cards: [{ type: Schema.Types.ObjectId, ref: "Card" }]
+    cardType: String,
+    cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
   },
   {
     timestamps: true,
