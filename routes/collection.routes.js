@@ -30,4 +30,60 @@ router.post(
   }
 );
 
+// Retrieves all of the collections:
+router.get("/collections", (req, res, next) => {
+  Collection.find()
+    //.populate("cards")
+    .then((allCollections) => res.json(allCollections))
+    .catch((err) => res.json(err));
+});
+
+// Retrieves a specific collection by id:
+router.get("/collections/:collectionId", (req, res, next) => {
+  const { collectionId } = req.params;
+  //console.log("ID is: ", collectionId)
+
+  if (!mongoose.Types.ObjectId.isValid(collectionId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Collection.findById(collectionId)
+    //.populate('cards')
+    .then((collection) => res.status(200).json(collection))
+    .catch((error) => res.json(error));
+});
+
+//Updates a specific collection by id:
+router.put("/collections/:collectionId", (req, res, next) => {
+  const { collectionId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(collectionId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
+    .then((updatedCollection) => res.json(updatedCollection))
+    .catch((error) => res.json(error));
+});
+
+// Deletes a specific Collection by id
+router.delete("/collections/:collectionId", (req, res, next) => {
+  const { collectionId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(collectionId)) {
+    res.status(400).json({ message: "Specified id is not valid" });
+    return;
+  }
+
+  Collection.findByIdAndRemove(collectionId)
+    .then(() =>
+      res.json({
+        message: `Collection with ${collectionId} is removed successfully.`,
+      })
+    )
+    .catch((error) => res.json(error));
+});
+
 module.exports = router;

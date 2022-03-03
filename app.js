@@ -19,7 +19,7 @@ require("./config")(app);
 const allRoutes = require("./routes/index.routes");
 app.use("/api", allRoutes);
 
-const collectionRouter = require('./routes/collection.routes');     // <== IMPORT
+const collectionRouter = require('./routes/collection.routes'); 
 app.use('/api', collectionRouter);  
      
 
