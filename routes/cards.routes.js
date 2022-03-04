@@ -45,7 +45,7 @@ router.post("/cards", fileUploader.single("fileUrl"), (req, res, next) => {
 // Retrieves all of the Cards:
 router.get("/cards/:theCollection", (req, res, next) => {
   const collectionId = req.params;
-  //console.log("ID is: ", collectionId);
+  console.log("ID is: ", collectionId);
 
   Card.find(collectionId)
     //.populate("cards")
