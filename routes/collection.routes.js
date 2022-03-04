@@ -5,25 +5,26 @@ const Collection = require("../models/Collection.model");
 const Card = require("../models/Card.model");
 const fileUploader = require("../config/cloudinaryCollec.config");
 
+// POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+  if (req.file) {
+    path = req.file.path;
+    console.log(path);
+  }
+  res.json({ path });
+});
+
 //  POST /api/collections  -  Creates a new collection
 router.post(
   "/collections",
-  fileUploader.single("imageUrl"),
+
   (req, res, next) => {
-    const { title, imageUrl, cardType } = req.body;
-
-    //console.log(imageUrl)
-    //console.log(title)
-    //console.log("file is: ", req.file)
-
-    let path = "";
-
-    if (req.file) {
-      path = req.file.path;
-    }
+    const { title, imageUrl } = req.body;
+    console.log("req body", req.body);
 
     //create collection:
-    Collection.create({ title, imageUrl: path, cards: [] })
+    Collection.create({ title, imageUrl, cards: [] })
       .then((response) => res.json(response))
       .catch((err) => res.json(err));
   }
@@ -48,7 +49,7 @@ router.get("/collections/:collectionId", (req, res, next) => {
   }
 
   Collection.findById(collectionId)
-    .populate('cards')
+    .populate("cards")
     .then((collection) => res.status(200).json(collection))
     .catch((error) => res.json(error));
 });
