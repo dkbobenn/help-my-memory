@@ -5,8 +5,18 @@ const Collection = require("../models/Collection.model");
 const Card = require("../models/Card.model");
 const fileUploader = require("../config/cloudinaryCard.config");
 
+// POST "/api/upload" => Route that receives a file, sends it to Cloudinary via the fileUploader and returns the file url
+router.post("/fileupload", fileUploader.single("fileUrl"), (req, res, next) => {
+  console.log("file is: ", req.file);
+  if (req.file) {
+    path = req.file.path;
+    console.log(path);
+  }
+  res.json({ path });
+});
+
 // Creates a new card
-router.post("/cards", fileUploader.single("fileUrl"), (req, res, next) => {
+router.post("/cards", (req, res, next) => {
   const {
     title,
     description,
@@ -17,16 +27,10 @@ router.post("/cards", fileUploader.single("fileUrl"), (req, res, next) => {
     theCollectionId,
   } = req.body;
 
-  let path = "";
-
-  if (req.file) {
-    path = req.file.path;
-  }
-
   Card.create({
     title,
     description,
-    fileUrl: path,
+    fileUrl,
     username,
     password,
     cardType,

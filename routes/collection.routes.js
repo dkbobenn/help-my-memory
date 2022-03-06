@@ -49,7 +49,7 @@ router.get("/collections/:collectionId", (req, res, next) => {
   }
 
   Collection.findById(collectionId)
-    .populate("cards")
+    // .populate("cards")
     .then((collection) => res.status(200).json(collection))
     .catch((error) => res.json(error));
 });
