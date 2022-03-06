@@ -24,7 +24,7 @@ router.post("/cards", (req, res, next) => {
     username,
     password,
     cardType,
-    theCollectionId,
+    collectionId,
   } = req.body;
 
   Card.create({
@@ -34,7 +34,7 @@ router.post("/cards", (req, res, next) => {
     username,
     password,
     cardType,
-    theCollection: theCollectionId,
+    theCollection: collectionId,
   })
     .then((newCard) => {
       return Collection.findByIdAndUpdate(theCollectionId, {
