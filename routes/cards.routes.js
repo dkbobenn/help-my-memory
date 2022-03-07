@@ -37,7 +37,7 @@ router.post("/cards", (req, res, next) => {
     theCollection: collectionId,
   })
     .then((newCard) => {
-      return Collection.findByIdAndUpdate(theCollectionId, {
+      return Collection.findByIdAndUpdate(collectionId, {
         $push: { cards: newCard._id },
       });
     })
@@ -47,20 +47,21 @@ router.post("/cards", (req, res, next) => {
 });
 
 // Retrieves all of the Cards:
-router.get("/cards/:theCollection", (req, res, next) => {
-  const collectionId = req.params;
-  console.log("ID is: ", collectionId);
+// router.get("/cards/:theCollection", (req, res, next) => {
+//   const collectionId = req.params;
+//   console.log("ID is: ", collectionId);
 
-  Card.find(collectionId)
-    //.populate("cards")
-    .then((allCards) => res.json(allCards))
-    .catch((err) => res.json(err));
-});
+//   Card.find(collectionId)
+//     .populate("cards")
+//     .then((allCards) => res.json(allCards))
+//     console.log(`allCards:`, allCards)
+//     .catch((err) => res.json(err));
+// });
 
 // Retrieves a specific card by id:
 router.get("/card/:cardId", (req, res, next) => {
   const { cardId } = req.params;
-  //console.log("ID is: ", cardId);
+  console.log("ID is: ", cardId);
 
   if (!mongoose.Types.ObjectId.isValid(cardId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -73,7 +74,7 @@ router.get("/card/:cardId", (req, res, next) => {
 });
 
 //Updates a specific card by id:
-router.put("/cards/:cardId", (req, res, next) => {
+router.put("/card/:cardId/edit", (req, res, next) => {
   const { cardId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(cardId)) {
@@ -87,7 +88,7 @@ router.put("/cards/:cardId", (req, res, next) => {
 });
 
 //Deletes a specific card by id
-router.delete("/cards/:cardId", (req, res, next) => {
+router.delete("/card/:cardId/delete", (req, res, next) => {
   const { cardId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(cardId)) {
