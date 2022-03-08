@@ -30,7 +30,12 @@ router.post("/cards", (req, res, next) => {
     collectionId,
   } = req.body;
 
+  console.log("Password:", password)
+  console.log("Cardtype:", cardType)
+
   const encryptedString = cryptr.encrypt(password);
+
+  console.log("Password2:", encryptedString)
 
   Card.create({
     title,
@@ -42,14 +47,17 @@ router.post("/cards", (req, res, next) => {
     theCollection: collectionId,
   })
     .then((newCard) => {
+     
       return Collection.findByIdAndUpdate(collectionId, {
         $push: { cards: newCard._id },
       });
+  
     })
     .then((response) => res.json(response))
 
     .catch((err) => res.json(err));
 });
+
 
 // Retrieves a specific card by id:
 router.get("/card/:cardId", (req, res, next) => {
@@ -94,6 +102,7 @@ router.put("/card/:cardId", (req, res, next) => {
     .then((updatedCard) => res.json(updatedCard))
     .catch((error) => res.json(error));
 });
+
 
 //Deletes a specific card by id
 router.delete("/card/:cardId", (req, res, next) => {
