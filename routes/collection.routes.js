@@ -55,7 +55,7 @@ router.get("/collections/:collectionId", (req, res, next) => {
 });
 
 //Updates a specific collection by id:
-router.put("/collections/:collectionId/edit", (req, res, next) => {
+router.put("/collections/:collectionId", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -69,14 +69,13 @@ router.put("/collections/:collectionId/edit", (req, res, next) => {
 });
 
 // Deletes a specific Collection by id
-router.delete("/collections/:collectionId/delete", (req, res, next) => {
+router.delete("/collections/:collectionId", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
-
   Collection.findByIdAndRemove(collectionId)
     .then(() =>
       res.json({
