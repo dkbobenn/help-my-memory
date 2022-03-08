@@ -76,6 +76,14 @@ router.delete("/collections/:collectionId", (req, res, next) => {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
+
+  //Delete cards connected to collection
+  Card.deleteMany({ theCollection: collectionId }).catch((error) => {
+    res.json(error);
+    return;
+  });
+
+  //Delete Collection
   Collection.findByIdAndRemove(collectionId)
     .then(() =>
       res.json({
@@ -84,5 +92,4 @@ router.delete("/collections/:collectionId", (req, res, next) => {
     )
     .catch((error) => res.json(error));
 });
-
 module.exports = router;

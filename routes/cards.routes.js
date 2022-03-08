@@ -57,7 +57,7 @@ router.get("/card/:cardId", (req, res, next) => {
 
   const { cardId } = req.params;
 
-  console.log("ID is: ", cardId);
+  //console.log("ID is: ", cardId);
   // console.log("Password is: ", password);
 
   if (!mongoose.Types.ObjectId.isValid(cardId)) {
@@ -66,7 +66,18 @@ router.get("/card/:cardId", (req, res, next) => {
   }
   Card.findById(cardId)
     //.populate('cards')
-    .then((card) => res.status(200).json(card))
+    .then((card) => {
+      console.log("Card:", card)
+      if (card.cardType == "password") {
+        console.log(card.cardType)
+        card.password = cryptr.decrypt(card.password);
+        console.log("Card after decryption:", card)
+       
+      }
+        res.status(200).json(card)
+  
+      
+    })
     .catch((error) => res.json(error));
 });
 
