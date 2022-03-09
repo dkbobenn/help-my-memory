@@ -10,10 +10,8 @@ const cryptr = new Cryptr("myTotalySecretKey");
 
 // POST "/api/upload" => Route that receives a file, sends it to Cloudinary via the fileUploader and returns the file url
 router.post("/fileupload", fileUploader.single("fileUrl"), (req, res, next) => {
-  console.log("file is: ", req.file);
   if (req.file) {
     path = req.file.path;
-    console.log(path);
   }
   res.json({ path });
 });
@@ -56,7 +54,6 @@ router.post("/cards", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-
 // GET: Retrieves a specific card by id:
 router.get("/card/:cardId", (req, res, next) => {
   //console.log("req.params is: ", res);
@@ -73,17 +70,16 @@ router.get("/card/:cardId", (req, res, next) => {
   Card.findById(cardId)
     //.populate('cards')
     .then((card) => {
-      console.log("Card:", card);
-      if ((card.cardType = "password")) {
-        console.log(card.cardType);
+      //console.log("Card:", card);
+      if (card.cardType === "password") {
+        //console.log(card.cardType);
         card.password = cryptr.decrypt(card.password);
-        console.log("Card after decryption:", card);
+        //console.log("Card after decryption:", card);
       }
       res.status(200).json(card);
     })
     .catch((error) => res.json(error));
 });
-
 
 //PUT: Updates a specific card by id:
 router.put("/card/:cardId", (req, res, next) => {
@@ -92,7 +88,7 @@ router.put("/card/:cardId", (req, res, next) => {
 
   const encryptedString = cryptr.encrypt(req.body.password);
 
-  console.log("Edit - encryptedString:", encryptedString);
+  //console.log("Edit - encryptedString:", encryptedString);
 
   req.body.password = encryptedString;
   //console.log("Edit - req.body:", req.body)
@@ -106,7 +102,6 @@ router.put("/card/:cardId", (req, res, next) => {
     .then((updatedCard) => res.json(updatedCard))
     .catch((error) => res.json(error));
 });
-
 
 //DELETE: Deletes a specific card by id
 router.delete("/card/:cardId", (req, res, next) => {
