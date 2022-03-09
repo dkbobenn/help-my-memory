@@ -18,7 +18,7 @@ router.post("/fileupload", fileUploader.single("fileUrl"), (req, res, next) => {
   res.json({ path });
 });
 
-// Creates a new card
+// POST: Creates a new card
 router.post("/cards", (req, res, next) => {
   const {
     title,
@@ -56,7 +56,8 @@ router.post("/cards", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-// Retrieves a specific card by id:
+
+// GET: Retrieves a specific card by id:
 router.get("/card/:cardId", (req, res, next) => {
   //console.log("req.params is: ", res);
 
@@ -83,7 +84,8 @@ router.get("/card/:cardId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-//Updates a specific card by id:
+
+//PUT: Updates a specific card by id:
 router.put("/card/:cardId", (req, res, next) => {
   const { cardId } = req.params;
   //console.log("Edit - req.params:", req.params)
@@ -105,7 +107,8 @@ router.put("/card/:cardId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-//Deletes a specific card by id
+
+//DELETE: Deletes a specific card by id
 router.delete("/card/:cardId", (req, res, next) => {
   const { cardId } = req.params;
 
