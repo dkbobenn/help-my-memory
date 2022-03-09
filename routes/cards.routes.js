@@ -30,12 +30,12 @@ router.post("/cards", (req, res, next) => {
     collectionId,
   } = req.body;
 
-  console.log("Password:", password)
-  console.log("Cardtype:", cardType)
+  //console.log("Password:", password)
+  //console.log("Cardtype:", cardType)
 
   const encryptedString = cryptr.encrypt(password);
 
-  console.log("Password2:", encryptedString)
+  //console.log("Password2:", encryptedString)
 
   Card.create({
     title,
@@ -47,17 +47,14 @@ router.post("/cards", (req, res, next) => {
     theCollection: collectionId,
   })
     .then((newCard) => {
-     
       return Collection.findByIdAndUpdate(collectionId, {
         $push: { cards: newCard._id },
       });
-  
     })
     .then((response) => res.json(response))
 
     .catch((err) => res.json(err));
 });
-
 
 // Retrieves a specific card by id:
 router.get("/card/:cardId", (req, res, next) => {
@@ -75,16 +72,13 @@ router.get("/card/:cardId", (req, res, next) => {
   Card.findById(cardId)
     //.populate('cards')
     .then((card) => {
-      console.log("Card:", card)
-      if (card.cardType == "password") {
-        console.log(card.cardType)
+      console.log("Card:", card);
+      if ((card.cardType = "password")) {
+        console.log(card.cardType);
         card.password = cryptr.decrypt(card.password);
-        console.log("Card after decryption:", card)
-       
+        console.log("Card after decryption:", card);
       }
-        res.status(200).json(card)
-  
-      
+      res.status(200).json(card);
     })
     .catch((error) => res.json(error));
 });
@@ -92,6 +86,14 @@ router.get("/card/:cardId", (req, res, next) => {
 //Updates a specific card by id:
 router.put("/card/:cardId", (req, res, next) => {
   const { cardId } = req.params;
+  //console.log("Edit - req.params:", req.params)
+
+  const encryptedString = cryptr.encrypt(req.body.password);
+
+  console.log("Edit - encryptedString:", encryptedString);
+
+  req.body.password = encryptedString;
+  //console.log("Edit - req.body:", req.body)
 
   if (!mongoose.Types.ObjectId.isValid(cardId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -102,7 +104,6 @@ router.put("/card/:cardId", (req, res, next) => {
     .then((updatedCard) => res.json(updatedCard))
     .catch((error) => res.json(error));
 });
-
 
 //Deletes a specific card by id
 router.delete("/card/:cardId", (req, res, next) => {
