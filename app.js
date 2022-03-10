@@ -23,10 +23,10 @@ const allRoutes = require("./routes/index.routes");
 app.use("/api", allRoutes);
 
 const collectionRouter = require("./routes/collection.routes");
-app.use("/api", collectionRouter);
+app.use("/api", isAuthenticated, collectionRouter);
 
 const cardRouter = require("./routes/cards.routes");
-app.use("/api", cardRouter);
+app.use("/api", isAuthenticated, cardRouter);
 
 const authRouter = require("./routes/auth.routes");
 app.use("/auth", authRouter);

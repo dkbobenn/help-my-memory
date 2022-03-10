@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Collection = require("../models/Collection.model");
 const Card = require("../models/Card.model");
 const fileUploader = require("../config/cloudinaryCollec.config");
+const isAuthenticated = require("../middleware/jwt.middleware");
 
 // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
 router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
@@ -19,7 +20,7 @@ router.post(
 
   (req, res, next) => {
     const { title, imageUrl } = req.body;
-    //console.log("req body", req.body);
+    //console.log("ImageUrl", imageUrl);
 
     //create collection:
     Collection.create({ title, imageUrl, cards: [] })
